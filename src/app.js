@@ -1,8 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import ReactDom from 'react-dom';
+import styled from "styled-components";
 import NewsName from "./NewsName";
 import MyNewsTitle from "./MyNewsTitle";
 import NewsContents from "./NewsContents";
+
+const ContentsWrap = styled.div`
+  width: 970px;
+  border: 1px solid #d4d4d4;
+`;
 
 function App() {
   const limit = 6;
@@ -36,11 +42,11 @@ function App() {
   };
 
   return (
-    <div>
+    <ContentsWrap>
       <MyNewsTitle prevHandler={prevHandler} nextHandler={nextHandler}/>
       <NewsName newsData={newsData} clickHandler={clickNewsName} selectedItemId={newsContents.id}/>
       <NewsContents newsContents={newsContents}/>
-    </div>
+    </ContentsWrap>
   )
 }
 
