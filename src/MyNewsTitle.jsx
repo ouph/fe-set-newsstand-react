@@ -19,7 +19,7 @@ const Title = styled.div`
   font-weight: bold;
   color: #333;
 `;
-const SubTitle = styled(Title)`
+const SubTitle_type1 = styled(Title)`
   margin-left: 5px;
   color: #808080;
   &::before {
@@ -36,6 +36,9 @@ const SubTitle = styled(Title)`
     vertical-align: middle;
     background-color: #d4d4d4;
   }
+`;
+const SubTitle_type2 = styled(Title)`
+  width: 400px;
 `;
 const Button = styled.button`
   height: 100%;
@@ -65,27 +68,29 @@ const RightButton = styled(Button)`
     transform: rotate(135deg)
   }
 `;
-
 const Icon = styled.i`
   margin-right: 10px;
   cursor: pointer;
 `;
-const MyNewsTitle = (props) => {
+const Div_fr = styled.div`
+  float: right;
+`;
+const MyNewsTitle = ({changeUiHandler, prevHandler, nextHandler}) => {
   return(
     <TitleWrap>
       <Div>
         <Title>뉴스 스탠드</Title>
-        <SubTitle>전체 언론사</SubTitle>
+        <SubTitle_type1>전체 언론사</SubTitle_type1>
       </Div>
-      <Div><Title style={{width: '400px'}}>MY 뉴스</Title></Div>
+      <Div><SubTitle_type2>MY 뉴스</SubTitle_type2></Div>
       <Div>
-        <Icon onClick={() => props.changeUiHandler("LIST")}>LIST</Icon>
-        <Icon onClick={() => props.changeUiHandler("CARD")}>CARD</Icon>
+        <Icon onClick={() => changeUiHandler("LIST")}>LIST</Icon>
+        <Icon onClick={() => changeUiHandler("CARD")}>CARD</Icon>
       </Div>
-      <div style={{float: 'right'}}>
-        <LeftButton onClick={props.prevHandler}/>
-        <RightButton onClick={props.nextHandler}/>
-      </div>
+      <Div_fr style={{float: 'right'}}>
+        <LeftButton onClick={prevHandler}/>
+        <RightButton onClick={nextHandler}/>
+      </Div_fr>
     </TitleWrap>
   )
 };

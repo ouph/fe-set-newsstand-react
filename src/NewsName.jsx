@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import styled from "styled-components";
 
 const NewsNameWrap = styled.ul`
@@ -28,11 +28,11 @@ const NewsName = ({newsData, clickHandler, selectedItemId}) => {
         </Item>
   );
   return (
-    <Fragment>
+    <>
       <NewsNameWrap>
         {titles}
       </NewsNameWrap>
-    </Fragment>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import styled from "styled-components";
 
 const CardList = styled.ul`
@@ -18,16 +18,15 @@ const Card = styled.li`
 `;
 
 const CardUi = ({newsData}) => {
-  console.dir(newsData);
   const cards = newsData.map(
-    v => <Card key={v.id}><img src={v.logoImgUrl} /></Card>
+    ({id, logoImgUrl}) => <Card key={id}><img src={logoImgUrl} /></Card>
   );
   return(
-    <Fragment>
+    <>
       <CardList>
         {cards}
       </CardList>
-    </Fragment>
+    </>
   )
 };
 

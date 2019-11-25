@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import ReactDom from 'react-dom';
 import styled from "styled-components";
-import MyNewsTitle from "./MyNewsTitle";
-import ListUi from "./ListUi";
-import CardUi from "./CardUi";
+import MyNewsTitle from "./MyNewsTitle.jsx";
+import ListUi from "./ListUi.jsx";
+import CardUi from "./CardUi.jsx";
 
 const ContentsWrap = styled.div`
   width: 970px;
@@ -16,6 +16,8 @@ function App() {
   const [newsData, setNewsData] = useState([]);
   const [newsContents, setNewsContents] = useState({});
   const [uiType, setUiType] = useState('LIST');
+  const numPerListPage = 6;
+  const numPerCardPage = 18;
 
   useEffect(() => {
     fetch("https://gist.githubusercontent.com/crongro/6928f4707c55da24a27e366579c2288e/raw/c288f6ba05b883862c186" +
@@ -46,7 +48,7 @@ function App() {
   };
 
   const changeUiHandler = (type) => {
-    setLimit(type === 'LIST' ? 6 : 18);
+    setLimit(type === 'LIST' ? numPerListPage : numPerCardPage);
     setOffset(0);
     setUiType(type);
   };

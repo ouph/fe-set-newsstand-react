@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 const ThumbWrap = styled.div`
@@ -23,12 +23,12 @@ const ThumbText = styled.span`
 
 const ThumbNews = ({url = '', text = ''}) => {
   return(
-    <Fragment>
+    <>
       <ThumbWrap>
         <ThumbImage src={url} />
         <ThumbText>{text}</ThumbText>
       </ThumbWrap>
-    </Fragment>
+    </>
   )
 };
 

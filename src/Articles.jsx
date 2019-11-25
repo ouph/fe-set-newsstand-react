@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 const ArticleWrap = styled.ul`
@@ -16,11 +16,11 @@ const ArticleWrap = styled.ul`
 const Articles = ({newslist = []}) => {
   const articles = newslist.map((v, i) => <li key={i}>{v}</li>);
   return(
-    <Fragment>
+    <>
       <ArticleWrap>
         {articles}
       </ArticleWrap>
-    </Fragment>
+    </>
   )
 };
 

@@ -1,13 +1,13 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 
 const Cards = ({newsData}) => {
 
   return(
-    <Fragment>
+    <>
       <ul>
 
       </ul>
-    </Fragment>
+    </>
   )
 };
 
