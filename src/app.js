@@ -10,6 +10,8 @@ const ContentsWrap = styled.div`
   border: 1px solid #d4d4d4;
 `;
 
+const DataContext = React.createContext({});
+
 function App() {
   const [limit, setLimit] = useState(6);
   const [offset, setOffset] = useState(0);
@@ -55,18 +57,14 @@ function App() {
 
   return (
     <ContentsWrap>
+    <DataContext.Provider value={{newsData, newsContents}}>
       <MyNewsTitle prevHandler={prevHandler} nextHandler={nextHandler} changeUiHandler={changeUiHandler} />
       {uiType === 'LIST' ?
-        <ListUi newsData={newsData}
-                clickHandler={clickNewsName}
-                selectedItemId={newsContents.id}
-                newsContents={newsContents}
-        />
-        :
-        <CardUi newsData={newsData} />
+        <ListUi clickHandler={clickNewsName} /> : <CardUi />
       }
+    </DataContext.Provider>
     </ContentsWrap>
   )
 }
-
+export {DataContext};
 ReactDom.render(<App/>, document.querySelector("#root"));

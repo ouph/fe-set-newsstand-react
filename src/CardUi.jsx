@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import styled from "styled-components";
+import {DataContext} from "./app";
 
 const CardList = styled.ul`
   width: 100%;
@@ -17,7 +18,8 @@ const Card = styled.li`
   box-sizing: border-box;
 `;
 
-const CardUi = ({newsData}) => {
+const CardUi = () => {
+  const {newsData} = useContext(DataContext);
   const cards = newsData.map(
     ({id, logoImgUrl}) => <Card key={id}><img src={logoImgUrl} /></Card>
   );

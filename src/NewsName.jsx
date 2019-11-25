@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import styled from "styled-components";
+import {DataContext} from "./app";
 
 const NewsNameWrap = styled.ul`
   width: 17%;
@@ -19,7 +20,8 @@ const Item = styled.li`
   cursor: pointer;
 `;
 
-const NewsName = ({newsData, clickHandler, selectedItemId}) => {
+const NewsName = ({clickHandler}) => {
+  const {newsData, newsContents: {id: selectedItemId}} = useContext(DataContext);
   const titles = newsData.map(
     v => <Item key={v.id}
                onClick={() => clickHandler(v.id)}

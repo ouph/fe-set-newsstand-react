@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import Articles from "./Articles.jsx";
 import ThumbNews from "./ThumbNews.jsx";
 import styled from "styled-components";
+import {DataContext} from "./app";
 
 const Div = styled.div`
   width: 76.7%;
@@ -9,11 +10,12 @@ const Div = styled.div`
   display: inline-block
 `;
 
-const NewsContents = ({newsContents: {thumbnews = {}, newslist}}) => {
+const NewsContents = () => {
+  const {newsContents: {thumbnews = {}}} = useContext(DataContext);
   return(
     <Div>
       <ThumbNews url={thumbnews.imageUrl} text={thumbnews.text}/>
-      <Articles newslist={newslist}/>
+      <Articles />
     </Div>
   )
 };

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components';
+import {DataContext} from "./app";
 
 const ArticleWrap = styled.ul`
   display: inline-block;
@@ -13,7 +14,8 @@ const ArticleWrap = styled.ul`
   color: #555;
 `;
 
-const Articles = ({newslist = []}) => {
+const Articles = () => {
+  const {newsContents: {newslist = []}} = useContext(DataContext);
   const articles = newslist.map((v, i) => <li key={i}>{v}</li>);
   return(
     <>
