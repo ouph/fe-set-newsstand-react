@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useReducer} from 'react';
 import ReactDom from 'react-dom';
 import styled from "styled-components";
 import MyNewsTitle from "./MyNewsTitle.jsx";
@@ -12,15 +12,43 @@ const ContentsWrap = styled.div`
 
 const DataContext = React.createContext({});
 
-function App() {
-  const numPerListPage = 6;
-  const numPerCardPage = 18;
+const numPerListPage = 6;
+const numPerCardPage = 18;
+const initState = {
+  limit: numPerListPage,
+  offset: 0,
+  type: 'LIST'
+};
+const pageReducer = (state, {type}) => {
+  const state_copy = {...state};
+  switch (type) {
+    case 'List':
+      state_copy.type = 'LIST';
+      state_copy.limit = numPerListPage;
+      state_copy.offset = 0;
+      return state_copy;
+    case 'Card':
+      state_copy.type = 'CARD';
+      state_copy.limit = numPerCardPage;
+      state_copy.offset = 0;
+      return state_copy;
+    case 'goToNext':
+      state_copy.offset = state_copy.offset + 1;
+      return state_copy;
+    case 'goToPrev':
+      state_copy.offset = state_copy.offset === 0 ? 0 : state_copy.offset - 1;
+      return state_copy;
+    case 'init':
+      return initState;
+    default:
+      break;
+  }
+};
 
-  const [limit, setLimit] = useState(numPerListPage);
-  const [offset, setOffset] = useState(0);
+function App() {
   const [newsData, setNewsData] = useState([]);
   const [newsContents, setNewsContents] = useState({});
-  const [uiType, setUiType] = useState('LIST');
+  const [state, dispatch] = useReducer(pageReducer, initState);
 
   const getNews = async () => {
     const res = await fetch("./newsstand-news-json.json");
@@ -29,6 +57,8 @@ function App() {
 
   useEffect(() => {
     getNews().then(news => {
+      const offset = state.offset;
+      const limit = state.limit;
       const paging = offset <= limit ? offset : parseInt(offset / limit);
       const data = news.slice(paging * limit, (paging + 1) * limit);
       if(data.length === 0) return;
@@ -36,35 +66,17 @@ function App() {
       setNewsData(data);
       setNewsContents(data[0]);
     });
-  }, [offset, limit]);
-
-  const prevHandler = () => {
-    const val = offset === 0 ? 0 : offset - 1;
-    setOffset(val);
-  };
-
-  const nextHandler = () => {
-    const val = offset + 1;
-    setOffset(val);
-  };
+  }, [state.offset, state.limit]);
 
   const clickNewsName = (id) => {
     setNewsContents(newsData.find(v => v.id === id));
   };
 
-  const changeUiHandler = (type) => {
-    setLimit(type === 'LIST' ? numPerListPage : numPerCardPage);
-    setOffset(0);
-    setUiType(type);
-  };
-
   return (
     <ContentsWrap>
     <DataContext.Provider value={{newsData, newsContents}}>
-      <MyNewsTitle prevHandler={prevHandler} nextHandler={nextHandler} changeUiHandler={changeUiHandler} />
-      {uiType === 'LIST' ?
-        <ListUi clickHandler={clickNewsName} /> : <CardUi />
-      }
+      <MyNewsTitle dispatch={dispatch} />
+      {state.type === 'LIST' ? <ListUi clickHandler={clickNewsName} /> : <CardUi />}
     </DataContext.Provider>
     </ContentsWrap>
   )

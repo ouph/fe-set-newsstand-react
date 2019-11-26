@@ -75,7 +75,7 @@ const Icon = styled.i`
 const Div_fr = styled.div`
   float: right;
 `;
-const MyNewsTitle = ({changeUiHandler, prevHandler, nextHandler}) => {
+const MyNewsTitle = ({dispatch}) => {
   return(
     <TitleWrap>
       <Div>
@@ -84,12 +84,12 @@ const MyNewsTitle = ({changeUiHandler, prevHandler, nextHandler}) => {
       </Div>
       <Div><SubTitle_type2>MY 뉴스</SubTitle_type2></Div>
       <Div>
-        <Icon onClick={() => changeUiHandler("LIST")}>LIST</Icon>
-        <Icon onClick={() => changeUiHandler("CARD")}>CARD</Icon>
+        <Icon onClick={() => dispatch({type: 'List'})}>LIST</Icon>
+        <Icon onClick={() => dispatch({type: 'Card'})}>CARD</Icon>
       </Div>
       <Div_fr style={{float: 'right'}}>
-        <LeftButton onClick={prevHandler}/>
-        <RightButton onClick={nextHandler}/>
+        <LeftButton onClick={() => dispatch({type: 'goToPrev'})}/>
+        <RightButton onClick={() => dispatch({type: 'goToNext'})}/>
       </Div_fr>
     </TitleWrap>
   )
