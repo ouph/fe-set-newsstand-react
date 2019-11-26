@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import {Link} from 'react-router-dom';
 
 const TitleWrap = styled.div`
   width: 100%;
@@ -84,8 +85,12 @@ const MyNewsTitle = ({dispatch}) => {
       </Div>
       <Div><SubTitle_type2>MY 뉴스</SubTitle_type2></Div>
       <Div>
-        <Icon onClick={() => dispatch({type: 'List'})}>LIST</Icon>
-        <Icon onClick={() => dispatch({type: 'Card'})}>CARD</Icon>
+        <Link to="/src/app.html">
+          <Icon onClick={() => dispatch({type: 'List'})}>LIST</Icon>
+        </Link>
+        <Link to="/src/app.html/Card">
+          <Icon onClick={() => dispatch({type: 'Card'})}>CARD</Icon>
+        </Link>
       </Div>
       <Div_fr style={{float: 'right'}}>
         <LeftButton onClick={() => dispatch({type: 'goToPrev'})}/>

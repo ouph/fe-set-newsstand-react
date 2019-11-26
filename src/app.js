@@ -5,6 +5,7 @@ import MyNewsTitle from "./MyNewsTitle.jsx";
 import ListUi from "./ListUi.jsx";
 import CardUi from "./CardUi.jsx";
 import {initState, pageReducer} from './pageReducer';
+import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 
 const ContentsWrap = styled.div`
   width: 970px;
@@ -19,7 +20,7 @@ function App() {
   const [state, dispatch] = useReducer(pageReducer, initState);
 
   const getNews = async () => {
-    const res = await fetch("./newsstand-news-json.json");
+    const res = await fetch("/src/newsstand-news-json.json");
 	  return res.json();
   };
 
@@ -40,12 +41,15 @@ function App() {
   };
 
   return (
-    <ContentsWrap>
-    <DataContext.Provider value={{newsData, newsContents}}>
-      <MyNewsTitle dispatch={dispatch} />
-      {state.type === 'LIST' ? <ListUi clickHandler={clickNewsName} /> : <CardUi />}
-    </DataContext.Provider>
-    </ContentsWrap>
+    <Router>
+      <ContentsWrap>
+        <DataContext.Provider value={{newsData, newsContents}}>
+          <MyNewsTitle dispatch={dispatch} />
+          <Route exact path="/src/app.html" render={() => <ListUi clickHandler={clickNewsName} />}/>
+          <Route path="/src/app.html/Card" render={() => <CardUi />}/>
+        </DataContext.Provider>
+      </ContentsWrap>
+    </Router>
   )
 }
 export {DataContext};
