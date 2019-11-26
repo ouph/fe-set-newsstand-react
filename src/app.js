@@ -13,26 +13,29 @@ const ContentsWrap = styled.div`
 const DataContext = React.createContext({});
 
 function App() {
-  const [limit, setLimit] = useState(6);
+  const numPerListPage = 6;
+  const numPerCardPage = 18;
+
+  const [limit, setLimit] = useState(numPerListPage);
   const [offset, setOffset] = useState(0);
   const [newsData, setNewsData] = useState([]);
   const [newsContents, setNewsContents] = useState({});
   const [uiType, setUiType] = useState('LIST');
-  const numPerListPage = 6;
-  const numPerCardPage = 18;
+
+  const getNews = async () => {
+    const res = await fetch("./newsstand-news-json.json");
+	  return res.json();
+  };
 
   useEffect(() => {
-    fetch("https://gist.githubusercontent.com/crongro/6928f4707c55da24a27e366579c2288e/raw/c288f6ba05b883862c186" +
-      "afcb295bbdde20077ff/newsstand-news-json.js")
-      .then(res => res.json())
-      .then(resJson => {
-        const paging = offset <= limit ? offset : parseInt(offset / limit);
-        const data = resJson.slice(paging * limit, (paging + 1) * limit);
-        if(data.length === 0) return;
+    getNews().then(news => {
+      const paging = offset <= limit ? offset : parseInt(offset / limit);
+      const data = news.slice(paging * limit, (paging + 1) * limit);
+      if(data.length === 0) return;
 
-        setNewsData(data);
-        setNewsContents(data[0]);
-      });
+      setNewsData(data);
+      setNewsContents(data[0]);
+    });
   }, [offset, limit]);
 
   const prevHandler = () => {
