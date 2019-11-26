@@ -23,6 +23,7 @@ const Title = styled.div`
 const SubTitle_type1 = styled(Title)`
   margin-left: 5px;
   color: #808080;
+  cursor: pointer;
   &::before {
     content: "\\003e";
     display: inline-block;
@@ -40,6 +41,7 @@ const SubTitle_type1 = styled(Title)`
 `;
 const SubTitle_type2 = styled(Title)`
   width: 400px;
+  cursor: pointer;
 `;
 const Button = styled.button`
   height: 100%;
@@ -81,9 +83,15 @@ const MyNewsTitle = ({dispatch}) => {
     <TitleWrap>
       <Div>
         <Title>뉴스 스탠드</Title>
-        <SubTitle_type1>전체 언론사</SubTitle_type1>
+        <Link to="/src/app.html/Card">
+          <SubTitle_type1 onClick={() => dispatch({type: 'Card'})}>전체 언론사</SubTitle_type1>
+        </Link>
       </Div>
-      <Div><SubTitle_type2>MY 뉴스</SubTitle_type2></Div>
+      <Div>
+        <Link to="/src/app.html">
+          <SubTitle_type2 onClick={() => dispatch({type: 'List'})}>MY 뉴스</SubTitle_type2>
+        </Link>
+      </Div>
       <Div>
         <Link to="/src/app.html">
           <Icon onClick={() => dispatch({type: 'List'})}>LIST</Icon>

@@ -5,7 +5,7 @@ import MyNewsTitle from "./MyNewsTitle.jsx";
 import ListUi from "./ListUi.jsx";
 import CardUi from "./CardUi.jsx";
 import {initState, pageReducer} from './pageReducer';
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 const ContentsWrap = styled.div`
   width: 970px;
