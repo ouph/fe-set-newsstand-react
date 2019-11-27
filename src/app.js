@@ -43,7 +43,7 @@ function App() {
   return (
     <Router>
       <ContentsWrap>
-        <DataContext.Provider value={{newsData, newsContents}}>
+        <DataContext.Provider value={{newsData, newsContents, setNewsData}}>
           <MyNewsTitle dispatch={dispatch} />
           <Route exact path="/src/app.html" render={() => <ListUi clickHandler={clickNewsName} />}/>
           <Route path="/src/app.html/Card" render={() => <CardUi />}/>

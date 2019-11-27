@@ -16,11 +16,15 @@ const SubDiv = styled.div`
   cursor: pointer;
 `;
 
-const Subscribe = () => {
+const Subscribe = ({id, isSubscribe, clickHandler}) => {
   return (
     <>
       <Div>
-        <SubDiv>구독</SubDiv>
+        {isSubscribe ?
+          <SubDiv onClick={() => clickHandler('unsubscribe', id)}>해지</SubDiv>
+          :
+          <SubDiv onClick={() => clickHandler('subscribe', id)}>구독</SubDiv>
+        }
         <SubDiv>기사보기</SubDiv>
       </Div>
     </>

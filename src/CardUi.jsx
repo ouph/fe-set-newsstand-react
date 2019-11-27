@@ -24,16 +24,26 @@ const Img = styled.img`
 
 const CardUi = () => {
   const [hovered, setHovered] = useState(null);
-  const {newsData} = useContext(DataContext);
+  const {newsData, setNewsData} = useContext(DataContext);
+
+  const clickHandler = (type, id) => {
+    const newData = newsData.map(v => v.id === id ? {...v, subscribe: type === 'subscribe'} : v);
+    setNewsData(newData);
+  };
+
   const cards = newsData.map(
-    ({id, logoImgUrl}) => {
+    ({id, logoImgUrl, subscribe}) => {
       return (
         <Card
           key={id}
           onMouseEnter={() => setHovered(id)}
           onMouseLeave={() => setHovered(null)}
         >
-          {hovered === id ? <Subscribe/> : <Img src={logoImgUrl} />}
+          {hovered === id ?
+            <Subscribe id={id} isSubscribe={subscribe} clickHandler={clickHandler} />
+            :
+            <Img src={logoImgUrl} />
+          }
         </Card>
       );
     }
