@@ -6,6 +6,7 @@ import ListUI from "./ListUI.jsx";
 import CardUI from "./CardUI.jsx";
 import {DataContext, initState, pageReducer} from './pageReducer';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
+import EmptyPage from "./EmptyPage.jsx";
 
 const ContentsWrap = styled.div`
   width: 970px;
@@ -32,8 +33,14 @@ function App() {
       <ContentsWrap>
         <DataContext.Provider value={{state, dispatch}}>
           <MyNewsTitle />
-          <Route exact path="/src/app.html"><ListUI /></Route>
-          <Route path="/src/app.html/Card"><CardUI /></Route>
+          {state.menuType === 'my' && state.subscribeCnt === 0 ?
+            <EmptyPage />
+            :
+            <>
+              <Route exact path="/src/app.html"><ListUI /></Route>
+              <Route path="/src/app.html/Card"><CardUI /></Route>
+            </>
+          }
         </DataContext.Provider>
       </ContentsWrap>
     </Router>

@@ -10,23 +10,29 @@ const initState = {
   originNewsData: [],
   newsData: [],
   newsContents: {},
-  menuType: 'my'
+  menuType: 'all',
+  subscribeCnt: 0
 };
 
 const setNewsInCurrentPage = (state) => {
-  const {limit, offset, originNewsData} = {...state.toJS()};
+  const {limit, offset, originNewsData, menuType} = {...state.toJS()};
   const paging = offset <= limit ? offset : parseInt(offset / limit);
-  const data = originNewsData.slice(paging * limit, (paging + 1) * limit);
+  // My뉴스일때는 구독한 언론사만 나오도록
+  const news = menuType !== 'my' ? originNewsData : originNewsData.filter(v => v.subscribe === true);
+  const data = news.slice(paging * limit, (paging + 1) * limit);
   return state.set('newsData', data).set('newsContents', data[0]);
 };
 
-const toggleSubscribe = (state) => {
+const toggleSubscribe = (state, id) => {
+  let subscribeCnt = state.get('subscribeCnt');
   return state.set('originNewsData', state.get('originNewsData').filter(v => {
-      if(v.id === payload) {
-        v.subscribe = !v.subscribe;
-      }
-      return v;
-    }));
+    if(v.id === id) {
+      v.subscribe = !v.subscribe;
+      if(v.subscribe) subscribeCnt += 1;
+      else subscribeCnt -= 1;
+    }
+    return v;
+    })).set('subscribeCnt', subscribeCnt > 0 ? subscribeCnt : 0);
 };
 
 const changeUI = (state, type) => {
@@ -66,7 +72,7 @@ const pageReducer = (state, {type, payload}) => {
       state_copy = setNewsInCurrentPage(state_copy);
       return state_copy.toJS();
     case 'changeSubscribe':
-      state_copy = toggleSubscribe(state_copy);
+      state_copy = toggleSubscribe(state_copy, payload);
       state_copy = setNewsInCurrentPage(state_copy);
       return state_copy.toJS();
     case 'changeMenuType':
