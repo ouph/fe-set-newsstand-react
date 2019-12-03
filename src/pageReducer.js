@@ -1,3 +1,4 @@
+import React from "react";
 import {Map} from 'immutable';
 
 const numPerListPage = 6;
@@ -18,6 +19,15 @@ const setNewsInCurrentPage = (state) => {
   return state.set('newsData', data).set('newsContents', data[0]);
 };
 
+const toggleSubscribe = (state) => {
+  return state.set('originNewsData', state.get('originNewsData').filter(v => {
+      if(v.id === payload) {
+        v.subscribe = !v.subscribe;
+      }
+      return v;
+    }));
+};
+
 const pageReducer = (state, {type, payload}) => {
   let state_copy = Map({...state});
   const offset = state_copy.get('offset');
@@ -30,7 +40,8 @@ const pageReducer = (state, {type, payload}) => {
       state_copy = setNewsInCurrentPage(state_copy);
       return state_copy.toJS();
     case 'getNewsContents':
-      return state_copy.set('newsContents', state_copy.get('newsData').find(v => v.id === payload)).toJS();
+      state_copy = state_copy.set('newsContents', state_copy.get('newsData').find(v => v.id === payload));
+      return state_copy.toJS();
     case 'List':
       state_copy = state_copy.set('type', type).set('limit', numPerListPage,).set('offset', 0);
       state_copy = setNewsInCurrentPage(state_copy);
@@ -53,12 +64,10 @@ const pageReducer = (state, {type, payload}) => {
       state_copy = state_copy.set('offset', offset === 0 ? 0 : offset - 1);
       state_copy = setNewsInCurrentPage(state_copy);
       return state_copy.toJS();
-    case 'subscribe':
-      // TODO
-      break;
-    case 'unSubscribe':
-      // TODO
-      break;
+    case 'changeSubscribe':
+      state_copy = toggleSubscribe(state_copy);
+      state_copy = setNewsInCurrentPage(state_copy);
+      return state_copy.toJS();
     case 'init':
       return initState;
     default:
@@ -66,4 +75,5 @@ const pageReducer = (state, {type, payload}) => {
   }
 };
 
-export {initState, pageReducer};
+const DataContext = React.createContext({});
+export {initState, pageReducer, DataContext};

@@ -2,10 +2,10 @@ import React from 'react';
 import NewsName from "./NewsName.jsx";
 import NewsContents from "./NewsContents.jsx";
 
-const ListUI = (props) => {
+const ListUI = () => {
   return(
     <>
-      <NewsName clickHandler={props.clickHandler} />
+      <NewsName />
       <NewsContents />
     </>
   )

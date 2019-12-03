@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import styled from "styled-components";
-import {DataContext} from "./app";
+import {DataContext} from "./pageReducer";
 
 const NewsNameWrap = styled.ul`
   width: 17%;
@@ -20,11 +20,12 @@ const Item = styled.li`
   cursor: pointer;
 `;
 
-const NewsName = ({clickHandler}) => {
-  const {state: {newsData, newsContents: {id: selectedItemId}}} = useContext(DataContext);
+const NewsName = () => {
+  const {state: {newsData, newsContents: {id: selectedItemId}}, dispatch} = useContext(DataContext);
+  const clickHandler = () => dispatch({type: 'getNewsContents', payload: id});
   const titles = newsData.map(
     v => <Item key={v.id}
-               onClick={() => clickHandler(v.id)}
+               onClick={clickHandler.bind(null, v.id)}
                style={selectedItemId === v.id ? {color: '#03cf5d'} : {}}>
           {v.company}
         </Item>

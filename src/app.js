@@ -4,15 +4,13 @@ import styled from "styled-components";
 import MyNewsTitle from "./MyNewsTitle.jsx";
 import ListUI from "./ListUI.jsx";
 import CardUI from "./CardUI.jsx";
-import {initState, pageReducer} from './pageReducer';
+import {DataContext, initState, pageReducer} from './pageReducer';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 const ContentsWrap = styled.div`
   width: 970px;
   border: 1px solid #d4d4d4;
 `;
-
-const DataContext = React.createContext({});
 
 function App() {
   const [state, dispatch] = useReducer(pageReducer, initState);
@@ -29,21 +27,16 @@ function App() {
     });
   }, []);
 
-  const clickNewsName = (id) => {
-    dispatch({type: 'getNewsContents', payload: id});
-  };
-
   return (
     <Router>
       <ContentsWrap>
         <DataContext.Provider value={{state, dispatch}}>
           <MyNewsTitle />
-          <Route exact path="/src/app.html" render={() => <ListUI clickHandler={clickNewsName} />}/>
-          <Route path="/src/app.html/Card"> <CardUI /> </Route>
+          <Route exact path="/src/app.html"><ListUI /></Route>
+          <Route path="/src/app.html/Card"><CardUI /></Route>
         </DataContext.Provider>
       </ContentsWrap>
     </Router>
   )
 }
-export {DataContext};
 ReactDom.render(<App/>, document.querySelector("#root"));

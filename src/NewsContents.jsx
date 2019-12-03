@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import Articles from "./Articles.jsx";
 import ThumbNews from "./ThumbNews.jsx";
 import styled from "styled-components";
-import {DataContext} from "./app";
+import {DataContext} from "./pageReducer";
 
 const Div = styled.div`
   width: 76.7%;

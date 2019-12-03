@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
 import styled from "styled-components";
-import {DataContext} from "./app";
+import {DataContext} from "./pageReducer";
 import Subscribe from "./Subscribe.jsx";
 
 const CardList = styled.ul`
@@ -24,12 +24,7 @@ const Img = styled.img`
 
 const CardUI = () => {
   const [hovered, setHovered] = useState(null);
-  const {state, dispatch} = useContext(DataContext);
-
-  const clickHandler = (type, id) => {
-    const newData = state.newsData.map(v => v.id === id ? {...v, subscribe: type === 'subscribe'} : v);
-    dispatch({type: 'setNews', payload: newData});
-  };
+  const {state} = useContext(DataContext);
 
   const cards = state.newsData.map(
     ({id, logoImgUrl, subscribe}) => {
@@ -40,7 +35,7 @@ const CardUI = () => {
           onMouseLeave={setHovered.bind(null, null)}
         >
           {hovered === id ?
-            <Subscribe id={id} isSubscribe={subscribe} clickHandler={clickHandler} />
+            <Subscribe id={id} isSubscribe={subscribe} />
             :
             <Img src={logoImgUrl} />
           }
