@@ -16,10 +16,9 @@ const initState = {
 
 const setNewsInCurrentPage = (state) => {
   const {limit, offset, originNewsData, menuType} = {...state.toJS()};
-  const paging = offset <= limit ? offset : parseInt(offset / limit);
   // My뉴스일때는 구독한 언론사만 나오도록
   const news = menuType !== 'my' ? originNewsData : originNewsData.filter(v => v.subscribe === true);
-  const data = news.slice(paging * limit, (paging + 1) * limit);
+  const data = news.slice(offset * limit, (offset + 1) * limit);
   return state.set('newsData', data).set('newsContents', data[0]);
 };
 
@@ -61,8 +60,12 @@ const pageReducer = (state, {type, payload}) => {
       // 마지막 페이지인지 체크
       const newOffset = offset + 1;
       const limit = state_copy.get('limit');
-      const dataSize = state_copy.get('originNewsData').length;
-      if(dataSize / (limit * offset) < newOffset) return state_copy.toJS();
+      const menuType = state_copy.get('menuType');
+      let dataSize;
+      if(menuType === 'my') dataSize = state_copy.get('subscribeCnt');
+      else dataSize = state_copy.get('originNewsData').length;
+      const maxOffset = Math.ceil(dataSize / limit) - 1;
+      if(newOffset > maxOffset) return state_copy.toJS();
 
       state_copy = state_copy.set('offset', newOffset);
       state_copy = setNewsInCurrentPage(state_copy);
