@@ -6,40 +6,59 @@ const initState = {
   limit: numPerListPage,
   offset: 0,
   type: 'List',
+  originNewsData: [],
   newsData: [],
   newsContents: {}
 };
+
+const setNewsInCurrentPage = (state) => {
+  const {limit, offset, originNewsData} = {...state.toJS()};
+  const paging = offset <= limit ? offset : parseInt(offset / limit);
+  const data = originNewsData.slice(paging * limit, (paging + 1) * limit);
+  return state.set('newsData', data).set('newsContents', data[0]);
+};
+
 const pageReducer = (state, {type, payload}) => {
-  const state_copy = Map({...state});
+  let state_copy = Map({...state});
   const offset = state_copy.get('offset');
+
   switch (type) {
+    case 'setOriginData':
+      state_copy = state_copy.set('originNewsData', payload);
+      return state_copy.toJS();
     case 'setNews':
-      const limit = state_copy.get('limit');
-      const paging = offset <= limit ? offset : parseInt(offset / limit);
-      const data = payload.slice(paging * limit, (paging + 1) * limit);
-      return state_copy.merge({
-        'newsData': data,
-        'newsContents': data[0]
-      }).toJS();
+      state_copy = setNewsInCurrentPage(state_copy);
+      return state_copy.toJS();
     case 'getNewsContents':
       return state_copy.set('newsContents', state_copy.get('newsData').find(v => v.id === payload)).toJS();
     case 'List':
-      return state_copy.merge({
-        'type': type,
-        'limit': numPerListPage,
-        'offset': 0
-      }).toJS();
+      state_copy = state_copy.set('type', type).set('limit', numPerListPage,).set('offset', 0);
+      state_copy = setNewsInCurrentPage(state_copy);
+      return state_copy.toJS();
     case 'Card':
-      return state_copy.merge({
-        'type': type,
-        'limit': numPerCardPage,
-        'offset': 0
-      }).toJS();
+      state_copy = state_copy.set('type', type).set('limit', numPerCardPage,).set('offset', 0);
+      state_copy = setNewsInCurrentPage(state_copy);
+      return state_copy.toJS();
     case 'goToNext':
-      // FIXME 마지막 페이지인지 아닌지 판별
-      return state_copy.set('offset', offset + 1).toJS();
+      // 마지막 페이지인지 체크
+      const newOffset = offset + 1;
+      const limit = state_copy.get('limit');
+      const dataSize = state_copy.get('originNewsData').length;
+      if(dataSize / (limit * offset) < newOffset) return state_copy.toJS();
+
+      state_copy = state_copy.set('offset', newOffset);
+      state_copy = setNewsInCurrentPage(state_copy);
+      return state_copy.toJS();
     case 'goToPrev':
-      return state_copy.set('offset', offset === 0 ? 0 : offset - 1).toJS();
+      state_copy = state_copy.set('offset', offset === 0 ? 0 : offset - 1);
+      state_copy = setNewsInCurrentPage(state_copy);
+      return state_copy.toJS();
+    case 'subscribe':
+      // TODO
+      break;
+    case 'unSubscribe':
+      // TODO
+      break;
     case 'init':
       return initState;
     default:

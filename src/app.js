@@ -24,10 +24,10 @@ function App() {
 
   useEffect(() => {
     getNews().then(news => {
-      // FIXME MY메뉴일때는 구독한 항목만 보여야할거 같은데...
-      dispatch({type: 'setNews', payload: news});
+      dispatch({type: 'setOriginData', payload: news});
+      dispatch({type: 'setNews'});
     });
-  }, [state.offset, state.limit]);
+  }, []);
 
   const clickNewsName = (id) => {
     dispatch({type: 'getNewsContents', payload: id});
