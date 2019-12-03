@@ -15,7 +15,7 @@ const ArticleWrap = styled.ul`
 `;
 
 const Articles = () => {
-  const {newsContents: {newslist = []}} = useContext(DataContext);
+  const {state: {newsContents: {newslist = []}}} = useContext(DataContext);
   const articles = newslist.map((v, i) => <li key={i}>{v}</li>);
   return(
     <>

@@ -2,7 +2,7 @@ import React from 'react';
 import NewsName from "./NewsName.jsx";
 import NewsContents from "./NewsContents.jsx";
 
-const ListUi = (props) => {
+const ListUI = (props) => {
   return(
     <>
       <NewsName clickHandler={props.clickHandler} />
@@ -11,4 +11,4 @@ const ListUi = (props) => {
   )
 };
 
-export default ListUi;
+export default ListUI;

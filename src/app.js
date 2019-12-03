@@ -1,9 +1,9 @@
-import React, {useState, useEffect, useReducer} from 'react';
+import React, {useEffect, useReducer} from 'react';
 import ReactDom from 'react-dom';
 import styled from "styled-components";
 import MyNewsTitle from "./MyNewsTitle.jsx";
-import ListUi from "./ListUi.jsx";
-import CardUi from "./CardUi.jsx";
+import ListUI from "./ListUI.jsx";
+import CardUI from "./CardUI.jsx";
 import {initState, pageReducer} from './pageReducer';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 
@@ -15,8 +15,6 @@ const ContentsWrap = styled.div`
 const DataContext = React.createContext({});
 
 function App() {
-  const [newsData, setNewsData] = useState([]);
-  const [newsContents, setNewsContents] = useState({});
   const [state, dispatch] = useReducer(pageReducer, initState);
 
   const getNews = async () => {
@@ -26,27 +24,22 @@ function App() {
 
   useEffect(() => {
     getNews().then(news => {
-      const {offset, limit} = {...state};
-      const paging = offset <= limit ? offset : parseInt(offset / limit);
-      const data = news.slice(paging * limit, (paging + 1) * limit);
-      if(data.length === 0) return;
-
-      setNewsData(data);
-      setNewsContents(data[0]);
+      // FIXME MY메뉴일때는 구독한 항목만 보여야할거 같은데...
+      dispatch({type: 'setNews', payload: news});
     });
   }, [state.offset, state.limit]);
 
   const clickNewsName = (id) => {
-    setNewsContents(newsData.find(v => v.id === id));
+    dispatch({type: 'getNewsContents', payload: id});
   };
 
   return (
     <Router>
       <ContentsWrap>
-        <DataContext.Provider value={{newsData, newsContents, setNewsData}}>
-          <MyNewsTitle dispatch={dispatch} />
-          <Route exact path="/src/app.html" render={() => <ListUi clickHandler={clickNewsName} />}/>
-          <Route path="/src/app.html/Card" render={() => <CardUi />}/>
+        <DataContext.Provider value={{state, dispatch}}>
+          <MyNewsTitle />
+          <Route exact path="/src/app.html" render={() => <ListUI clickHandler={clickNewsName} />}/>
+          <Route path="/src/app.html/Card"> <CardUI /> </Route>
         </DataContext.Provider>
       </ContentsWrap>
     </Router>

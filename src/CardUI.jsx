@@ -22,22 +22,22 @@ const Img = styled.img`
   margin: 20px 0;
 `;
 
-const CardUi = () => {
+const CardUI = () => {
   const [hovered, setHovered] = useState(null);
-  const {newsData, setNewsData} = useContext(DataContext);
+  const {state, dispatch} = useContext(DataContext);
 
   const clickHandler = (type, id) => {
-    const newData = newsData.map(v => v.id === id ? {...v, subscribe: type === 'subscribe'} : v);
-    setNewsData(newData);
+    const newData = state.newsData.map(v => v.id === id ? {...v, subscribe: type === 'subscribe'} : v);
+    dispatch({type: 'setNews', payload: newData});
   };
 
-  const cards = newsData.map(
+  const cards = state.newsData.map(
     ({id, logoImgUrl, subscribe}) => {
       return (
         <Card
           key={id}
-          onMouseEnter={() => setHovered(id)}
-          onMouseLeave={() => setHovered(null)}
+          onMouseEnter={setHovered.bind(null, id)}
+          onMouseLeave={setHovered.bind(null, null)}
         >
           {hovered === id ?
             <Subscribe id={id} isSubscribe={subscribe} clickHandler={clickHandler} />
@@ -57,4 +57,4 @@ const CardUi = () => {
   )
 };
 
-export default CardUi;
+export default CardUI;

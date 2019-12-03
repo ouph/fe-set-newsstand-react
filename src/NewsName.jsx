@@ -21,7 +21,7 @@ const Item = styled.li`
 `;
 
 const NewsName = ({clickHandler}) => {
-  const {newsData, newsContents: {id: selectedItemId}} = useContext(DataContext);
+  const {state: {newsData, newsContents: {id: selectedItemId}}} = useContext(DataContext);
   const titles = newsData.map(
     v => <Item key={v.id}
                onClick={() => clickHandler(v.id)}

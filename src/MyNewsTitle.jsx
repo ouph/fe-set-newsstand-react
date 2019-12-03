@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
+import {DataContext} from "./app";
 
 const TitleWrap = styled.div`
   width: 100%;
@@ -75,35 +76,37 @@ const Icon = styled.i`
   margin-right: 10px;
   cursor: pointer;
 `;
-const Div_fr = styled.div`
+const MoveBtn = styled.div`
   float: right;
 `;
-const MyNewsTitle = ({dispatch}) => {
+const MyNewsTitle = () => {
+  const {dispatch} = useContext(DataContext);
+	const clickHandler = (type) => dispatch({type: type});
   return(
     <TitleWrap>
       <Div>
         <Title>뉴스 스탠드</Title>
         <Link to="/src/app.html/Card">
-          <SubTitle_type1 onClick={() => dispatch({type: 'Card'})}>전체 언론사</SubTitle_type1>
+          <SubTitle_type1 onClick={clickHandler.bind(null, 'Card')}>전체 언론사</SubTitle_type1>
         </Link>
       </Div>
       <Div>
         <Link to="/src/app.html">
-          <SubTitle_type2 onClick={() => dispatch({type: 'List'})}>MY 뉴스</SubTitle_type2>
+          <SubTitle_type2 onClick={clickHandler.bind(null, 'List')}>MY 뉴스</SubTitle_type2>
         </Link>
       </Div>
       <Div>
         <Link to="/src/app.html">
-          <Icon onClick={() => dispatch({type: 'List'})}>LIST</Icon>
+          <Icon onClick={clickHandler.bind(null, 'List')}>LIST</Icon>
         </Link>
         <Link to="/src/app.html/Card">
-          <Icon onClick={() => dispatch({type: 'Card'})}>CARD</Icon>
+          <Icon onClick={clickHandler.bind(null, 'Card')}>CARD</Icon>
         </Link>
       </Div>
-      <Div_fr style={{float: 'right'}}>
-        <LeftButton onClick={() => dispatch({type: 'goToPrev'})}/>
-        <RightButton onClick={() => dispatch({type: 'goToNext'})}/>
-      </Div_fr>
+      <MoveBtn>
+        <LeftButton onClick={clickHandler.bind(null, 'goToPrev')}/>
+        <RightButton onClick={clickHandler.bind(null, 'goToNext')}/>
+      </MoveBtn>
     </TitleWrap>
   )
 };

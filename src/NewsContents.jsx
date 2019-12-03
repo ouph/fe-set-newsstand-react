@@ -11,7 +11,7 @@ const Div = styled.div`
 `;
 
 const NewsContents = () => {
-  const {newsContents: {thumbnews = {}}} = useContext(DataContext);
+  const {state: {newsContents: {thumbnews = {}}}} = useContext(DataContext);
   return(
     <Div>
       <ThumbNews url={thumbnews.imageUrl} text={thumbnews.text}/>
