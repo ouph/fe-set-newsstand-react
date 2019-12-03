@@ -23,7 +23,6 @@ const Title = styled.div`
 `;
 const SubTitle_type1 = styled(Title)`
   margin-left: 5px;
-  color: #808080;
   cursor: pointer;
   &::before {
     content: "\\003e";
@@ -80,27 +79,35 @@ const MoveBtn = styled.div`
   float: right;
 `;
 const MyNewsTitle = () => {
-  const {dispatch} = useContext(DataContext);
-	const clickHandler = (type) => dispatch({type: type});
+  const {state, dispatch} = useContext(DataContext);
+	const clickHandler = (type, payload) => dispatch({type, payload});
   return(
     <TitleWrap>
       <Div>
         <Title>뉴스 스탠드</Title>
         <Link to="/src/app.html/Card">
-          <SubTitle_type1 onClick={clickHandler.bind(null, 'Card')}>전체 언론사</SubTitle_type1>
+          <SubTitle_type1
+            onClick={clickHandler.bind(null, 'changeMenuType', 'all')}
+            style={state.menuType === 'all' ? {} : {color: '#ccc'}}>
+            전체 언론사
+          </SubTitle_type1>
         </Link>
       </Div>
       <Div>
         <Link to="/src/app.html">
-          <SubTitle_type2 onClick={clickHandler.bind(null, 'List')}>MY 뉴스</SubTitle_type2>
+          <SubTitle_type2
+            onClick={clickHandler.bind(null, 'changeMenuType', 'my')}
+            style={state.menuType === 'my' ? {} : {color: '#ccc'}}>
+            MY 뉴스
+          </SubTitle_type2>
         </Link>
       </Div>
       <Div>
         <Link to="/src/app.html">
-          <Icon onClick={clickHandler.bind(null, 'List')}>LIST</Icon>
+          <Icon onClick={clickHandler.bind(null, 'changeUI', 'list')}>LIST</Icon>
         </Link>
         <Link to="/src/app.html/Card">
-          <Icon onClick={clickHandler.bind(null, 'Card')}>CARD</Icon>
+          <Icon onClick={clickHandler.bind(null, 'changeUI', 'card')}>CARD</Icon>
         </Link>
       </Div>
       <MoveBtn>

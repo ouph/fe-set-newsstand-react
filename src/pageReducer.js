@@ -6,10 +6,11 @@ const numPerCardPage = 18;
 const initState = {
   limit: numPerListPage,
   offset: 0,
-  type: 'List',
+  type: 'list',
   originNewsData: [],
   newsData: [],
-  newsContents: {}
+  newsContents: {},
+  menuType: 'my'
 };
 
 const setNewsInCurrentPage = (state) => {
@@ -28,6 +29,12 @@ const toggleSubscribe = (state) => {
     }));
 };
 
+const changeUI = (state, type) => {
+  const limit = type === 'list' ? numPerListPage : numPerCardPage;
+  const newState = state.set('type', type).set('limit', limit).set('offset', 0);
+  return setNewsInCurrentPage(newState);
+};
+
 const pageReducer = (state, {type, payload}) => {
   let state_copy = Map({...state});
   const offset = state_copy.get('offset');
@@ -42,14 +49,8 @@ const pageReducer = (state, {type, payload}) => {
     case 'getNewsContents':
       state_copy = state_copy.set('newsContents', state_copy.get('newsData').find(v => v.id === payload));
       return state_copy.toJS();
-    case 'List':
-      state_copy = state_copy.set('type', type).set('limit', numPerListPage,).set('offset', 0);
-      state_copy = setNewsInCurrentPage(state_copy);
-      return state_copy.toJS();
-    case 'Card':
-      state_copy = state_copy.set('type', type).set('limit', numPerCardPage,).set('offset', 0);
-      state_copy = setNewsInCurrentPage(state_copy);
-      return state_copy.toJS();
+    case 'changeUI':
+      return changeUI(state_copy, payload).toJS();
     case 'goToNext':
       // 마지막 페이지인지 체크
       const newOffset = offset + 1;
@@ -68,6 +69,9 @@ const pageReducer = (state, {type, payload}) => {
       state_copy = toggleSubscribe(state_copy);
       state_copy = setNewsInCurrentPage(state_copy);
       return state_copy.toJS();
+    case 'changeMenuType':
+      state_copy = state_copy.set('menuType', payload);
+      return changeUI(state_copy, payload === 'my' ? 'list' : 'card').toJS();
     case 'init':
       return initState;
     default:
