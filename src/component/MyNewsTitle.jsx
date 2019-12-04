@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
-import {DataContext} from "./pageReducer";
+import {DataContext} from "../pageReducer";
 
 const TitleWrap = styled.div`
   width: 100%;

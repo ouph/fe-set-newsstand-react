@@ -1,6 +1,6 @@
 import React, {useContext} from 'react'
 import styled from "styled-components";
-import {DataContext} from "./pageReducer";
+import {DataContext} from "../../pageReducer";
 
 const Div = styled.div`
   padding: 18px 0;

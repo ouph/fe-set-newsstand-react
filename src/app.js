@@ -1,12 +1,12 @@
 import React, {useEffect, useReducer} from 'react';
 import ReactDom from 'react-dom';
 import styled from "styled-components";
-import MyNewsTitle from "./MyNewsTitle.jsx";
-import ListUI from "./ListUI.jsx";
-import CardUI from "./CardUI.jsx";
+import MyNewsTitle from "./component/MyNewsTitle.jsx";
+import ListUI from "./component/List/ListUI.jsx";
+import CardUI from "./component/Card/CardUI.jsx";
 import {DataContext, initState, pageReducer} from './pageReducer';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
-import EmptyPage from "./EmptyPage.jsx";
+import EmptyPage from "./component/EmptyPage.jsx";
 
 const ContentsWrap = styled.div`
   width: 970px;

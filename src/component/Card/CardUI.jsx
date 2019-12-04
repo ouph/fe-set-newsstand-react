@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
 import styled from "styled-components";
-import {DataContext} from "./pageReducer";
+import {DataContext} from "../../pageReducer";
 import Subscribe from "./Subscribe.jsx";
 
 const CardList = styled.ul`
